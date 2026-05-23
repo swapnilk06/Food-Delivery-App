@@ -1,56 +1,118 @@
-# Welcome to your Expo app 👋
+☕ Premium Tea, Coffee & Cake App
+A premium Tea, Coffee, and Cake delivery application designed for an artisan cafe experience. Developed by Swapnil Kathale.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This application implements a robust multi-navigator architecture, full-lifecycle session authentication, dynamic cafe-themed styling, and state-managed cart operations. It is built using the latest Expo SDK 55 and TypeScript.
 
-## Get started
+✨ Key Features
+🌐 Multi-Navigator Architecture
+Auth Stack: Seamless flow between Onboarding, Login, and Registration.
 
-1. Install dependencies
+Drawer Navigation: Sidebar access with dynamic user profiles, theme toggles, and account management.
 
-   ```bash
-   npm install
-   ```
+Tab Navigation: Core navigation (Home, Search, Orders, Profile) with consistent iconography.
 
-2. Start the app
+Stack Navigation: Integrated flow for Restaurants, Menus, Address management, and Cart/Checkout.
 
-   ```bash
-   npx expo start
-   ```
+🔐 Session-Based Auth System
+Live Integration: Seamlessly communicates with FreeAPI endpoints (/users/register, /users/login).
 
-In the output, you'll find options to open the app in a
+JWT Persistence: Secure session handling using @react-native-async-storage/async-storage.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Profile Sync: Automatic background validation (/users/current-user) on app launch.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+🎨 Artisan Cafe Design System
+Curated Palette: Warm espresso browns, creamy off-whites, and soft textures designed specifically for a premium cafe brand.
 
-## Get a fresh project
+Dynamic Theming: Context-aware stylesheets that toggle between "Light" and "Dark" modes instantly via the Settings drawer.
 
-When you're ready, run:
+⚡ Core Context Providers
+AuthProvider: Manages global authentication, user profile state, and session tokens.
 
-```bash
-npm run reset-project
+ThemeProvider: Controls the application's visual identity (colors, borders, and typography).
+
+CartProvider: Handles complex state including subtotal arithmetic, tax calculations (18% GST), and order history.
+
+🛠️ Tech Stack
+Framework: React Native / Expo (SDK 55)
+
+Language: TypeScript
+
+Navigation: React Navigation v7
+
+State Management: React Context API
+
+Icons: @expo/vector-icons (Ionicons)
+
+📂 Project Structure
+```
+food-delivery-app/
+├── App.tsx                    # Roots Providers & entrypoint
+├── babel.config.js            # Reanimated plugin configuration
+├── package.json               # Lockfiles & dependencies
+├── README.md                  # Project Documentation
+└── src/
+    ├── context/               # Global State Managers
+    │   ├── AuthContext.tsx    # Session, JWT, and API actions
+    │   ├── CartContext.tsx    # In-memory Cart and Order History
+    │   └── ThemeContext.tsx   # Cafe-themed visual tokens (Light/Dark)
+    ├── data/                  
+    │   └── resturants.ts      # Cafe categories, coffees, teas & cakes
+    ├── navigations/           
+    │   └── RootNavigation.tsx # Stack, Drawer, and Tab routing
+    ├── screens/               # Premium UI Screens
+    │   ├── AddressScreen.tsx
+    │   ├── CartScreen.tsx
+    │   ├── HomeScreen.tsx
+    │   ├── LoginScreen.tsx
+    │   ├── OnBoardingScreen.tsx
+    │   ├── OrdersScreen.tsx
+    │   ├── ProfileScreen.tsx
+    │   ├── RegisterScreen.tsx
+    │   ├── ResturantScreen.tsx
+    │   ├── SearchScreen.tsx
+    │   └── SettingScreen.tsx
+    └── types/
+        └── types.ts           # Shared typings and route params
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+🚀 Getting Started
+1. Installation
+Clone the repository and install the required dependencies:
 
-### Other setup steps
+```bash
+npm install
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+2. Verify Compatibility
+Ensure your local environment dependencies are healthy:
 
-## Learn more
+```bash
+npx expo-doctor
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Boot the Application
+Clear the packager cache to ensure all navigation and context changes are registered correctly:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-## Join the community
+```bash
+npx expo start --c
+```
 
-Join our community of developers creating universal apps.
+- Press i to boot on the iOS Simulator.
+- Press a to boot on the Android Emulator.
+- Scan the QR code to run on a physical device using the Expo Go application.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+🛡️ Authentication Architecture
+All network requests are directed towards the FreeAPI base URL: [https://api.freeapi.app/api/v1](https://api.freeapi.app/api/v1)
+
+Session Flow:
+
+Login: Credentials are sent; on success, a JWT accessToken is returned.
+
+Persistence: The token is stored in AsyncStorage.
+
+Validation: On startup, the AuthProvider attempts to fetch /users/current-user. If the token is invalid, the app forces a logout and redirects to the Auth Stack.
+
+Cleanup: logout() clears local storage and resets the authentication state, triggering a UI redirect.
+
+Developed by Swapnil Kathale
